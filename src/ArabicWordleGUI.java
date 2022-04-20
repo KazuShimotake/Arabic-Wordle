@@ -74,7 +74,7 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
     private int sixWinCount=0;
     private int loseCount=0;
 
-    private int wordsRemaining=7;
+    private int wordsRemaining=45;
     private boolean checker = false;
     private int fourLineCount = 6;
     private int fiveLineCount = 7;
@@ -102,30 +102,19 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
                 "Click a button", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         if (input == 0) {
             gameMode=0;
-            System.out.println("Three Word Mode: " + gameMode);
             System.exit(0);
         }else if (input == 1) {
             gameMode=1;
-            letterMode = 4;
-            System.out.println("Four Word Mode: " + gameMode + " " + letterMode);
             System.exit(0);
         }else if(input == 2){
             gameMode=2;
-            int lineCount = 0;
             letterMode = 5;
-
-            System.out.println("Five Word Mode: " + gameMode);
 
             for(int i = 0; i<45;i++){
                 randomIndex.add(i);
             }
             Collections.shuffle(randomIndex);
-            for(int i = 0; i<7;i++)
-            {
-                System.out.println(randomIndex.get(i));
-            }
         }
-        System.out.println(gameMode + " " + letterMode);
         reset();
     }
 
@@ -187,28 +176,19 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
         answer.clear();
         String answerHolder = "";
         if (gameMode == 0) {
-            System.out.println("Shouldn't be here 1");
             System.exit(0);
         }else if (gameMode == 1) {
-            System.out.println("Shouldn't be here 1");
+            System.exit(0);
         }else if(gameMode == 2){
             letterMode = 5;
             answerHolder = getAnswer(fiveLineCount);
         }
 
-        System.out.println("game mode: " + gameMode + ", letterMode-1: " + (letterMode-1));
         for(int i = 0; i<letterMode-1;i++){
             answer.add(answerHolder.substring(0,1));
             answerHolder = answerHolder.substring(2);
-            System.out.println(answerHolder);
         }
         answer.add(answerHolder);
-        for(int i = 0; i<letterMode;i++){
-            System.out.println("answerTrans index " + i + ": " + answer.get(i));
-        }
-//        for(int i = 0; i<letterMode; i++){
-//            answer.add(answerTrans.get(letterMode-1-i));
-//        }
         board = new JTextField[6][letterMode];
         keys = new JButton[4][11];
 
@@ -217,9 +197,6 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
         initializeMenuBar();
         initializeBoard();
         initializeKeyboard();
-        for(int i = 0; i<5;i++){
-            System.out.println("Keys row 0, column " + i + ": " + keys[0][i].getText());
-        }
 
         mainPanel.add(menuBar);
         mainPanel.add(pane);
@@ -239,17 +216,14 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
         }else if(gameMode ==2){
             answerList = new File("FiveLetterAnswers.txt");
         }
-        System.out.println(answerList);
         String answerLine = "";
         try {
             BufferedReader linereader = new BufferedReader(new FileReader(answerList));
             int wordNumber = 0;
             if(randomIndex.size()==1){
-                System.out.println("randomIndex is 1");
                 wordNumber = randomIndex.get(0);
                 randomIndex.clear();
             }else{
-                System.out.println("randomIndex is more than 1");
                 wordNumber = randomIndex.get(randomIndex.size()-1);
                 randomIndex.remove(randomIndex.size()-1);
             }
@@ -259,15 +233,10 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
                 answerLine = linereader.readLine();
             }
             answerLine = linereader.readLine();
-            System.out.println(answerLine);
         } catch (FileNotFoundException e) {
-            // The FileReader couldn't be made... emit an error for the user
-            System.out.println(answerList+" could not be found...");
             // Return a non-zero exit code to the OS
             System.exit(1);
         } catch (IOException e) {
-            // readLine had a problem
-            System.out.println("Could not read from the file... this only happens if the filesystem breaks during execution");
             System.exit(1);
         }
         return answerLine;
@@ -304,8 +273,6 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
         menu.add(gameStats);
         menu.add(quit);
 
-        System.out.println("Game counter: " + gameCount);
-
         menuBar.add(menu);
     }
 
@@ -324,7 +291,6 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
             letter.setFont(new Font(Font.SANS_SERIF,Font.BOLD,LETTER_SIZE));
             board[0][i] = letter;
             firstWord.add(letter);
-            System.out.println("added board tile " + 0 + " " + i);
         }
         for(int j = 0; j < letterMode; j++){
             JTextField letter = new JTextField("");
@@ -434,7 +400,6 @@ public class ArabicWordleGUI extends JFrame{// implements ActionListener {
             });
             keys[0][i] = btn;
             keyboardTop.add(btn);
-            System.out.println("added button " + 0 + " " + currentLetterIndex);
         }
     }
 
